@@ -14,11 +14,13 @@ export type Round = string[][];
 export interface GroupState {
   rounds: Round[];
   groupSize: number;
+  nextRoundError: string;
 }
 
 const initialState: GroupState = {
   rounds: [],
   groupSize: 2,
+  nextRoundError: "",
 };
 
 export const groupsSlice = createSlice({
@@ -26,11 +28,21 @@ export const groupsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(calculateNextRound.fulfilled, (state, action) => {
-      state.rounds.push(action.payload);
-    });
+    builder
+      .addCase(calculateNextRound.fulfilled, (state, action) => {
+        state.rounds.push(action.payload);
+      })
+      .addCase(calculateNextRound.rejected, (state, action) => {
+        state.nextRoundError =
+          typeof action.payload === "string"
+            ? action.payload
+            : "Unknown error. #dnjIwU";
+      });
   },
 });
+
+export const selectNextRoundError = (state: RootState) =>
+  state[REDUCER_KEY].nextRoundError;
 
 // const { _setNextRound } = groupsSlice.actions;
 
@@ -85,6 +97,7 @@ export const calculateNextRound = createAsyncThunk<
   void,
   {
     state: RootState;
+    rejectValue: string;
   }
 >("groups/nextRound", async (_, { dispatch, getState, rejectWithValue }) => {
   const state = getState();
@@ -108,7 +121,7 @@ export const calculateNextRound = createAsyncThunk<
   console.timeEnd(timerId);
 
   return rejectWithValue(
-    `Failed to find round after ${ITERATE_LIMIT} tries. #80fpQN`
+    `Failed to find valid round after ${ITERATE_LIMIT} tries. #80fpQN`
   );
 });
 

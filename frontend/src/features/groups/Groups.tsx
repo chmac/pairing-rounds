@@ -2,10 +2,15 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectParticipants } from "../participants/participantSlice";
 import styles from "./Groups.module.css";
-import { calculateNextRound, selectRounds } from "./groupsSlice";
+import {
+  calculateNextRound,
+  selectNextRoundError,
+  selectRounds,
+} from "./groupsSlice";
 
 export function Groups() {
   const rounds = useAppSelector(selectRounds);
+  const nextRoundError = useAppSelector(selectNextRoundError);
   const participants = useAppSelector(selectParticipants);
   const dispatch = useAppDispatch();
 
@@ -24,6 +29,13 @@ export function Groups() {
           ))}
         </div>
       ))}
+
+      {nextRoundError === "" ? null : (
+        <div className={styles.round}>
+          <p>Error: {nextRoundError}</p>
+        </div>
+      )}
+
       <div className={styles.row}>
         <button
           className={styles.button}
