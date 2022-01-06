@@ -94,6 +94,7 @@ export const calculateNextRound = createAsyncThunk<
   const pairs = selectPairs(state);
 
   const iterateArray = Array.from({ length: ITERATE_LIMIT });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   for (const a of iterateArray) {
     const nextRoundCandidate = createRound(ids, state[REDUCER_KEY].groupSize);
     if (!doesRoundValidate(pairs, nextRoundCandidate)) {
