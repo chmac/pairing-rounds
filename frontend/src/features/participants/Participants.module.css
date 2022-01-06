@@ -2,9 +2,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.row:not(:last-child) {
   margin-bottom: 16px;
 }
 
