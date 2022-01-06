@@ -1,6 +1,7 @@
 {
-  "name": "frontend",
+  "name": "pairing-rounds-frontend",
   "version": "0.1.0",
+  "homepage": "https://chmac.github.io/pairing-rounds/",
   "private": true,
   "license": "AGPL-3.0-or-later",
   "dependencies": {
