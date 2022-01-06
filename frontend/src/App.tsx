@@ -1,7 +1,8 @@
 import React from "react";
-import { Participants } from "./features/participants/Participants";
-import { Groups } from "./features/groups/Groups";
 import "./App.css";
+import { Groups } from "./features/groups/Groups";
+import { Participants } from "./features/participants/Participants";
+import { Reset } from "./features/reset/Reset";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       </header>
       <Participants />
       <Groups />
+      <Reset />
     </div>
   );
 }
