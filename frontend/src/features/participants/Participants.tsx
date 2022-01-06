@@ -65,7 +65,7 @@ export function Participants() {
         ))}
       </div>
       {participants.length !== 0 ? null : (
-        <div className={styles.row}>Add some participants</div>
+        <div className={styles.row}>Add some participants to get started</div>
       )}
     </div>
   );
