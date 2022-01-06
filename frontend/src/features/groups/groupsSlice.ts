@@ -46,6 +46,8 @@ export const selectPairs = (state: RootState) => {
   return pairs as Pairs;
 };
 
+export const selectRounds = (state: RootState) => state[REDUCER_KEY].rounds;
+
 const doesRoundValidate = (pairs: Pairs, round: Round) => {
   const roundPairs = getPairsFromRound(round);
   for (const pairIds in roundPairs) {
