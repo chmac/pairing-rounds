@@ -19,7 +19,15 @@ export function Reset() {
         }}
       >
         Reset
-      </button>
+      </button>{" "}
+      -{" "}
+      <a
+        href="https://github.com/chmac/pairing-rounds"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Help
+      </a>
     </div>
   );
 }
