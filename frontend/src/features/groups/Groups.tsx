@@ -7,6 +7,7 @@ import {
   decrementGroupSize,
   incrementGroupSize,
   selectGroupSize,
+  selectIsWorkingOnNextRound,
   selectNextRoundError,
   selectRounds,
 } from "./groupsSlice";
@@ -14,6 +15,7 @@ import {
 export function Groups() {
   const rounds = useAppSelector(selectRounds);
   const groupSize = useAppSelector(selectGroupSize);
+  const isWorkingOnNextRound = useAppSelector(selectIsWorkingOnNextRound);
   const nextRoundError = useAppSelector(selectNextRoundError);
   const participants = useAppSelector(selectParticipants);
   const dispatch = useAppDispatch();
@@ -33,6 +35,12 @@ export function Groups() {
           ))}
         </div>
       ))}
+
+      {!isWorkingOnNextRound ? null : (
+        <div className={styles.round}>
+          <p>Trying to find a valid next round</p>
+        </div>
+      )}
 
       {nextRoundError === "" ? null : (
         <div className={styles.round}>
@@ -61,6 +69,7 @@ export function Groups() {
           className={styles.button}
           aria-label="Next round"
           onClick={() => dispatch(calculateNextRound())}
+          disabled={isWorkingOnNextRound}
         >
           Calculate next round
         </button>

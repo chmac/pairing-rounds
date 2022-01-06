@@ -14,12 +14,14 @@ export type Round = string[][];
 export interface GroupState {
   rounds: Round[];
   groupSize: number;
+  isWorkingOnNextRound: boolean;
   nextRoundError: string;
 }
 
 const initialState: GroupState = {
   rounds: [],
   groupSize: 2,
+  isWorkingOnNextRound: false,
   nextRoundError: "",
 };
 
@@ -39,12 +41,15 @@ export const groupsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(calculateNextRound.pending, (state) => {
+        state.isWorkingOnNextRound = true;
         state.nextRoundError = "";
       })
       .addCase(calculateNextRound.fulfilled, (state, action) => {
+        state.isWorkingOnNextRound = false;
         state.rounds.push(action.payload);
       })
       .addCase(calculateNextRound.rejected, (state, action) => {
+        state.isWorkingOnNextRound = false;
         state.nextRoundError =
           typeof action.payload === "string"
             ? action.payload
@@ -58,6 +63,9 @@ export const selectNextRoundError = (state: RootState) =>
 
 export const selectGroupSize = (state: RootState) =>
   state[REDUCER_KEY].groupSize;
+
+export const selectIsWorkingOnNextRound = (state: RootState) =>
+  state[REDUCER_KEY].isWorkingOnNextRound;
 
 export const { decrementGroupSize, incrementGroupSize } = groupsSlice.actions;
 
