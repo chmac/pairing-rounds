@@ -1,4 +1,6 @@
 - [x] Redux persist
 - [ ] Add option to scramble orders in groups
+- [ ] Backup / export option
+  - localStorage is a bit flaky, would be nice to have a JSON dump / import
 - [ ] Refactor Groups feature to be called Rounds
   - It's actually dealing with rounds, not groups
