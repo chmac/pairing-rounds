@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { customAlphabet } from "nanoid";
 import { AppThunk, RootState } from "../../app/store";
 
@@ -44,11 +44,6 @@ export const partitipantsSlice = createSlice({
       state.participants[id] = participant;
     },
   },
-  // extraReducers: (builder) => {
-  //   builder.addCase(calculateNextRound, (state) => {
-  //     return state;
-  //   });
-  // },
 });
 
 const { _addParticipant } = partitipantsSlice.actions;
