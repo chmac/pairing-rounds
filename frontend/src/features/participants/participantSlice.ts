@@ -73,7 +73,8 @@ export const addParticipant =
   (dispatch, getState) => {
     const state = getState();
     const ids = selectParticipantIds(state);
-    for (const a in Array.from({ length: 5 })) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const _a in Array.from({ length: 5 })) {
       const id = generateId();
       if (ids.indexOf(id) !== -1) {
         continue;

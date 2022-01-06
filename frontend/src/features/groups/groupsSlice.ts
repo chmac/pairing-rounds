@@ -132,7 +132,7 @@ export const calculateNextRound = createAsyncThunk<
   console.log("Starting iteration #MLCSyV");
   console.time(timerId);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  for (const a of iterateArray) {
+  for (const _a of iterateArray) {
     const nextRoundCandidate = createRound(ids, state[REDUCER_KEY].groupSize);
     if (!doesRoundValidate(pairs, nextRoundCandidate)) {
       await nonBlockingNothing();
