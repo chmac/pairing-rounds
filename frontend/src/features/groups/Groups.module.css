@@ -66,3 +66,11 @@
 .button:active {
   background-color: rgba(112, 76, 182, 0.2);
 }
+
+.groupSize {
+  font-size: 58px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-top: 2px;
+  font-family: "Courier New", Courier, monospace;
+}

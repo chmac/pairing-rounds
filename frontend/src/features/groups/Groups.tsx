@@ -4,12 +4,16 @@ import { selectParticipants } from "../participants/participantSlice";
 import styles from "./Groups.module.css";
 import {
   calculateNextRound,
+  decrementGroupSize,
+  incrementGroupSize,
+  selectGroupSize,
   selectNextRoundError,
   selectRounds,
 } from "./groupsSlice";
 
 export function Groups() {
   const rounds = useAppSelector(selectRounds);
+  const groupSize = useAppSelector(selectGroupSize);
   const nextRoundError = useAppSelector(selectNextRoundError);
   const participants = useAppSelector(selectParticipants);
   const dispatch = useAppDispatch();
@@ -37,12 +41,28 @@ export function Groups() {
       )}
 
       <div className={styles.row}>
+        <span>Group size:</span>
+        <button
+          className={styles.button}
+          aria-label="Decrement value"
+          onClick={() => dispatch(decrementGroupSize())}
+        >
+          -
+        </button>
+        <span className={styles.groupSize}>{groupSize}</span>
+        <button
+          className={styles.button}
+          aria-label="Increment value"
+          onClick={() => dispatch(incrementGroupSize())}
+        >
+          +
+        </button>
         <button
           className={styles.button}
           aria-label="Next round"
           onClick={() => dispatch(calculateNextRound())}
         >
-          Next round
+          Calculate next round
         </button>
         <span className={styles.value}>{}</span>
       </div>

@@ -26,9 +26,21 @@ const initialState: GroupState = {
 export const groupsSlice = createSlice({
   name: REDUCER_KEY,
   initialState,
-  reducers: {},
+  reducers: {
+    incrementGroupSize: (state) => {
+      state.groupSize++;
+    },
+    decrementGroupSize: (state) => {
+      if (state.groupSize > 2) {
+        state.groupSize--;
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
+      .addCase(calculateNextRound.pending, (state) => {
+        state.nextRoundError = "";
+      })
       .addCase(calculateNextRound.fulfilled, (state, action) => {
         state.rounds.push(action.payload);
       })
@@ -44,7 +56,10 @@ export const groupsSlice = createSlice({
 export const selectNextRoundError = (state: RootState) =>
   state[REDUCER_KEY].nextRoundError;
 
-// const { _setNextRound } = groupsSlice.actions;
+export const selectGroupSize = (state: RootState) =>
+  state[REDUCER_KEY].groupSize;
+
+export const { decrementGroupSize, incrementGroupSize } = groupsSlice.actions;
 
 type Pairs = { [pairIds: string]: true };
 export const selectPairs = (state: RootState) => {
