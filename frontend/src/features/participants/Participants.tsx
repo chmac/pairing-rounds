@@ -1,7 +1,11 @@
 import React, { useCallback, useState } from "react";
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { addParticipant, selectParticipantsArray } from "./participantSlice";
+import {
+  addParticipant,
+  selectParticipantsArray,
+  toggleParticipantIsActive,
+} from "./participantSlice";
 import styles from "./Participants.module.css";
 
 export function Participants() {
@@ -46,12 +50,20 @@ export function Participants() {
           Add participant
         </button>
       </div>
-      {participants.map((participant) => (
-        <div className={styles.row} key={participant.id}>
-          {participant.id}: {participant.name} (
-          {participant.active ? "active" : "disabled"})
-        </div>
-      ))}
+      <div className={styles.row}>
+        {participants.map((participant) => (
+          <div
+            className={styles.cell}
+            key={participant.id}
+            onClick={() => {
+              dispatch(toggleParticipantIsActive(participant.id));
+            }}
+          >
+            {participant.name}
+            <br />({participant.active ? "active" : "disabled"})
+          </div>
+        ))}
+      </div>
       {participants.length !== 0 ? null : (
         <div className={styles.row}>Add some participants</div>
       )}

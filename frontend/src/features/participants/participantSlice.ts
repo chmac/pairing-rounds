@@ -29,6 +29,13 @@ export const partitipantsSlice = createSlice({
   name: REDUCER_KEY,
   initialState,
   reducers: {
+    toggleParticipantIsActive: (state, action: PayloadAction<string>) => {
+      const p = state.participants[action.payload];
+      if (typeof p === "undefined") {
+        throw new Error("Trying to toggle non existent participant. #rjdh7b");
+      }
+      p.active = !p.active;
+    },
     _addParticipant: (state, action: PayloadAction<Participant>) => {
       const { id, ...participant } = action.payload;
       if (typeof state.participants[id] !== "undefined") {
@@ -45,6 +52,7 @@ export const partitipantsSlice = createSlice({
 });
 
 const { _addParticipant } = partitipantsSlice.actions;
+export const { toggleParticipantIsActive } = partitipantsSlice.actions;
 
 export const selectParticipants = (state: RootState) =>
   state[REDUCER_KEY].participants;
