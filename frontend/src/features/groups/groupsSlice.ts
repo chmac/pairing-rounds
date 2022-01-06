@@ -1,42 +1,30 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { chunk, shuffle } from "lodash/fp";
 import { RootState } from "../../app/store";
+import { selectActiveParticipantIds } from "../participants/participantSlice";
 
 export const REDUCER_KEY = "groups" as const;
 
 const PAIR_DELIMITER = "-";
 const ITERATE_LIMIT = 1e5;
 
-export interface ParticipantData {
-  name: string;
-  active: boolean;
-}
-export interface Participants {
-  [id: string]: ParticipantData;
-}
-export interface Participant extends ParticipantData {
-  id: string;
-}
 export type Round = string[][];
 export interface GroupState {
-  participants: Participants;
   rounds: Round[];
   groupSize: number;
 }
 
 const initialState: GroupState = {
-  participants: {},
   rounds: [],
   groupSize: 2,
 };
 
-export const groupSlice = createSlice({
+export const groupsSlice = createSlice({
   name: REDUCER_KEY,
   initialState,
   reducers: {
-    setNextRound: (state, action: PayloadAction<Round>) => {
-      const rounds = state.rounds.concat(action.payload);
-      return { ...state, rounds };
+    _setNextRound: (state, action: PayloadAction<Round>) => {
+      state.rounds.push(action.payload);
     },
   },
   // extraReducers: (builder) => {
@@ -46,26 +34,7 @@ export const groupSlice = createSlice({
   // },
 });
 
-const { setNextRound } = groupSlice.actions;
-
-export const selectParticipants = (state: RootState) =>
-  state[REDUCER_KEY].participants;
-export const selectParticipantsArray = (state: RootState) => {
-  const participants = selectParticipants(state);
-  const output = Object.keys(participants).map((key) => {
-    return { ...participants[key], id: key };
-  });
-  return output;
-};
-
-export const selectParticipantIds = (state: RootState) =>
-  Object.keys(selectParticipants(state));
-export const selectActiveParticipantIds = (state: RootState) => {
-  const participants = selectParticipants(state);
-  const allIds = selectParticipantIds(state);
-  const ids = allIds.filter((id) => participants[id].active);
-  return ids;
-};
+const { _setNextRound: setNextRound } = groupsSlice.actions;
 
 type Pairs = { [pairIds: string]: true };
 export const selectPairs = (state: RootState) => {
@@ -134,4 +103,4 @@ export const calculateNextRound = createAsyncThunk<
   }
 });
 
-export default groupSlice.reducer;
+export default groupsSlice.reducer;

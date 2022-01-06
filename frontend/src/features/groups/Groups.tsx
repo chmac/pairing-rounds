@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { calculateNextRound, selectParticipantsArray } from "./groupsSlice";
+import React from "react";
+import { useAppDispatch } from "../../app/hooks";
 import styles from "./Groups.module.css";
+import { calculateNextRound } from "./groupsSlice";
 
 export function Groups() {
-  const participants = useAppSelector(selectParticipantsArray);
+  // const participants = useAppSelector(selectParticipantsArray);
   const dispatch = useAppDispatch();
 
   return (
@@ -20,14 +19,6 @@ export function Groups() {
         </button>
         <span className={styles.value}>{}</span>
       </div>
-      {participants.map((participant) => (
-        <div className={styles.row}>
-          {participant.id}: {participant.name} ({participant.active})
-        </div>
-      ))}
-      {participants.length !== 0 ? null : (
-        <div className={styles.row}>Add some participants</div>
-      )}
     </div>
   );
 }

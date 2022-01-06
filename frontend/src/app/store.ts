@@ -3,11 +3,15 @@ import counterReducer from "../features/counter/counterSlice";
 import groupsReducer, {
   REDUCER_KEY as groupsKey,
 } from "../features/groups/groupsSlice";
+import participantsReducer, {
+  REDUCER_KEY as participantsKey,
+} from "../features/participants/participantSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     [groupsKey]: groupsReducer,
+    [participantsKey]: participantsReducer,
   },
 });
 
