@@ -125,6 +125,14 @@ export const calculateNextRound = createAsyncThunk<
 >("groups/nextRound", async (_, { dispatch, getState, rejectWithValue }) => {
   const state = getState();
   const ids = selectActiveParticipantIds(state);
+  const groupSize = selectGroupSize(state);
+
+  if (ids.length < groupSize * 2) {
+    return rejectWithValue(
+      `You need to have at least ${groupSize * 2} participants. #di3437`
+    );
+  }
+
   const pairs = selectPairs(state);
 
   const iterateArray = Array.from({ length: ITERATE_LIMIT });
