@@ -1,1 +1,3 @@
 - [ ] Add option to scramble orders in groups
+- [ ] Refactor Groups feature to be called Rounds
+  - It's actually dealing with rounds, not groups
