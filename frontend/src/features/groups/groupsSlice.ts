@@ -1,12 +1,14 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { chunk, shuffle } from "lodash/fp";
+import { nanoid } from "nanoid/non-secure";
 import { RootState } from "../../app/store";
 import { selectActiveParticipantIds } from "../participants/participantSlice";
 
 export const REDUCER_KEY = "groups" as const;
 
 const PAIR_DELIMITER = "-";
-const ITERATE_LIMIT = 1e5;
+// const ITERATE_LIMIT = 1e5;
+const ITERATE_LIMIT = 1e3;
 
 export type Round = string[][];
 export interface GroupState {
@@ -22,19 +24,15 @@ const initialState: GroupState = {
 export const groupsSlice = createSlice({
   name: REDUCER_KEY,
   initialState,
-  reducers: {
-    _setNextRound: (state, action: PayloadAction<Round>) => {
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(calculateNextRound.fulfilled, (state, action) => {
       state.rounds.push(action.payload);
-    },
+    });
   },
-  // extraReducers: (builder) => {
-  //   builder.addCase(calculateNextRound, (state) => {
-  //     return state;
-  //   });
-  // },
 });
 
-const { _setNextRound: setNextRound } = groupsSlice.actions;
+// const { _setNextRound } = groupsSlice.actions;
 
 type Pairs = { [pairIds: string]: true };
 export const selectPairs = (state: RootState) => {
@@ -83,17 +81,20 @@ const nonBlockingNothing = () => {
 };
 
 export const calculateNextRound = createAsyncThunk<
-  void,
+  Round,
   void,
   {
     state: RootState;
   }
->("groups/nextRound", async (_, { dispatch, getState }) => {
+>("groups/nextRound", async (_, { dispatch, getState, rejectWithValue }) => {
   const state = getState();
   const ids = selectActiveParticipantIds(state);
   const pairs = selectPairs(state);
 
   const iterateArray = Array.from({ length: ITERATE_LIMIT });
+  const timerId = nanoid();
+  console.log("Starting iteration #MLCSyV");
+  console.time(timerId);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   for (const a of iterateArray) {
     const nextRoundCandidate = createRound(ids, state[REDUCER_KEY].groupSize);
@@ -101,9 +102,14 @@ export const calculateNextRound = createAsyncThunk<
       await nonBlockingNothing();
       continue;
     }
-    await dispatch(setNextRound(nextRoundCandidate));
-    return;
+    console.timeEnd(timerId);
+    return nextRoundCandidate;
   }
+  console.timeEnd(timerId);
+
+  return rejectWithValue(
+    `Failed to find round after ${ITERATE_LIMIT} tries. #80fpQN`
+  );
 });
 
 export default groupsSlice.reducer;
